@@ -150,7 +150,9 @@ var sonar = {
                 done = true;
                 socket.close();
                 socket = null;
-                sonar.dead_ip(ip);
+                // PhantomJS <2.0 implements hixie-76, which will result in a Close event instead of Open due to a Chromium bug.
+                // Accept a closed connection as valid and try to identify a device on it.
+                sonar.identify_device( ip );
             }
         }
         socket.onopen = function(){
